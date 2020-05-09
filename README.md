@@ -1,4 +1,4 @@
-# AppetiserCodingChallenge
+# AppetiserCodingExam
 
 Please see list bbelow for some information regarding the application:
   - Was built using Xcode 11.4.1
