@@ -1,24 +1,22 @@
 //
-//  TrackListRemoteLoader.swift
+//  TrackDetailsRemoteLoader.swift
 //  AppetiserCodingExam
 //
-//  Created by Marielle on 5/8/20.
+//  Created by cybilltek on 5/17/20.
 //
 
 import UIKit
 import RxSwift
 
-protocol TrackListRemoteLoader {
-    func load() -> Observable<[Track]>
+protocol TrackDetailsRemoteLoader {
     func downloadTrackImage(imageUrl: String) -> Observable<UIImage>
 }
 
-public class DefaultTrackListRemoteLoader: TrackListRemoteLoader {
+public class DefaultTrackDetailsRemoteLoader: TrackDetailsRemoteLoader {
     
     //MARK: - Properties
       
     var apiService: APIManager
-    var parser: TrackListParser
     
     //MARK: - Methods
     
@@ -26,21 +24,9 @@ public class DefaultTrackListRemoteLoader: TrackListRemoteLoader {
 
     init(apiService: APIManager) {
         self.apiService = apiService
-        self.parser = TrackListParser()
     }
     
     //MARK: Public
-    
-    /**
-    For loading Track List data from remoyte web service
-
-    - Returns: an Observable of element Array of Tracks
-    */
-    func load() -> Observable<[Track]> {
-        return self.apiService
-          .perform(request: TrackListAlamofireService().load())
-          .flatMap(parser.parse)
-    }
     
     /**
     For downloading Track Image from the given Image Url

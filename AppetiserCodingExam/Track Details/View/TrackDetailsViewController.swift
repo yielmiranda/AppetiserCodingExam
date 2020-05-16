@@ -40,11 +40,6 @@ class TrackDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if disposeBag == nil {
-            disposeBag = DisposeBag()
-            setupObservables()
-        }
-        
         setupView()
     }
     
@@ -57,12 +52,15 @@ class TrackDetailsViewController: UIViewController {
     //MARK: - Methods
     
     private func setupView() {
+        //check first if track data is complete
+        //if incomplete, it's the app's first load
         guard let _ = track.trackName else {
             viewModel.loadTrackDetails(trackId: track.trackId)
             return
         }
         
-        artworkImageView.loadImage(imageUrl: track.artworkUrl100)
+        //proceed
+        artworkImageView.image = viewModel.loadTrackImage(imageUrl: track.artworkUrl100)
         
         titleLabel.text = track.trackName
         genreLabel.text = track.primaryGenreName
@@ -74,6 +72,10 @@ class TrackDetailsViewController: UIViewController {
     private func setupObservables() {
         viewModel.track.subscribe(onNext: { (track) in
             self.setSelectedTrack(track: track)
+        }).disposed(by: disposeBag)
+        
+        viewModel.trackImage.subscribe(onNext: { (image) in
+            self.artworkImageView.image = image
         }).disposed(by: disposeBag)
         
         viewModel.trackDetailsFetchError.subscribe(onNext: { (error) in

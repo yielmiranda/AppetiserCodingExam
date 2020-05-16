@@ -13,16 +13,20 @@ class TrackDetailsViewModel: NSObject {
     
     //MARK: - Properties
     
-    var trackDetailsLocalLoader: TrackDetailsLocalLoader!
+    var trackDetailsLoader: TrackDetailsLoader!
     let track: BehaviorRelay<Track?> = BehaviorRelay(value: nil)
     let trackDetailsFetchError: BehaviorRelay<String> = BehaviorRelay(value: "")
+    let trackImage: BehaviorRelay<UIImage> = BehaviorRelay(value: UIImage(named: "artworkPlaceholder")!)
     
     private let disposeBag = DisposeBag()
     
     //MARK: - Init
     
     override init() {
-        trackDetailsLocalLoader = DefaultTrackDetailsLocalLoader()
+        let localLoader = DefaultTrackDetailsLocalLoader()
+        let remoteLoader = DefaultTrackDetailsRemoteLoader(apiService: APIManager.shared)
+        
+        trackDetailsLoader = DefaultTrackDetailsLoader(localLoader: localLoader, remoteLoader: remoteLoader)
     }
     
     //MARK: - Methods
@@ -35,11 +39,31 @@ class TrackDetailsViewModel: NSObject {
      - Parameter trackId: identifier of the Track
      */
     func loadTrackDetails(trackId: Int) {
-        trackDetailsLocalLoader.load(trackId: trackId).subscribe(onNext: { (track) in
+        trackDetailsLoader.load(trackId: trackId).subscribe(onNext: { (track) in
             self.onLoadTrackDetailsSuccess(track: track)
         }, onError: { (error) in
             self.onLoadTrackDetailsFailure(error: error)
         }).disposed(by: disposeBag)
+    }
+    
+    /**
+    For downloading Track Image from the given Image Url or cache (if it's already downloaded)
+     
+    - Parameter imageUrl: url string where the image will be downloaded from
+    - Returns: a UIImage
+    */
+    func loadTrackImage(imageUrl: String) -> UIImage {
+        if let image = loadTrackImageFromCache(imageUrl: imageUrl) {
+            return image
+        }
+        
+        trackDetailsLoader.downloadTrackImage(imageUrl: imageUrl).subscribe(onNext: { (image) in
+            self.trackImage.accept(image)
+        }, onError: { (error) in
+            
+        }).disposed(by: disposeBag)
+        
+        return UIImage(named: "artworkPlaceholder")!
     }
     
     //MARK: Private
@@ -50,5 +74,9 @@ class TrackDetailsViewModel: NSObject {
     
     private func onLoadTrackDetailsFailure(error: Error) {
         self.trackDetailsFetchError.accept(error.localizedDescription)
+    }
+    
+    private func loadTrackImageFromCache(imageUrl: String) -> UIImage? {
+        return APIManager.shared.loadImageFromCache(imageUrl: imageUrl)
     }
 }

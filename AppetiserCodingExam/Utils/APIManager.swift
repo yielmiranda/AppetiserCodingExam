@@ -81,16 +81,6 @@ class APIManager: NSObject {
      */
     func performDownloadImageRequest(request: Request) -> Observable<Image> {
         return Observable.create({ observer -> Disposable in
-            
-            //check cache first
-            let imageCacheKey = request.path
-            if let image = self.imageCache.image(withIdentifier: imageCacheKey) {
-                observer.onNext(image)
-                observer.onCompleted()
-                return Disposables.create()
-            }
-            
-            //proceed to download
             var urlRequest = URLRequest(url: URL(string: request.path)!)
             urlRequest.httpMethod = request.method.rawValue
             
@@ -109,6 +99,7 @@ class APIManager: NSObject {
                     }
                     
                     //save to cache first
+                    let imageCacheKey = request.path
                     self.imageCache.add(image, withIdentifier: imageCacheKey)
                     
                     observer.onNext(image)
@@ -117,5 +108,19 @@ class APIManager: NSObject {
             })
             return Disposables.create()
         })
+    }
+
+    /**
+     For checking and loading of image from cache
+     
+     - Parameter imageUrl: url string which serves as the identifier from cache
+     - Returns: an Image if it exists, nil if not
+     */
+    func loadImageFromCache(imageUrl: String) -> UIImage? {
+        if let image = self.imageCache.image(withIdentifier: imageUrl) {
+            return image
+        }
+        
+        return nil
     }
 }

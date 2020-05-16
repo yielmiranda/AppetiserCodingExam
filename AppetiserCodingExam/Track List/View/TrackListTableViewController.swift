@@ -91,6 +91,10 @@ class TrackListTableViewController: UITableViewController {
             self.tableView.reloadData()
         }).disposed(by: disposeBag)
         
+        viewModel.shouldReloadTableIndex.subscribe(onNext: { (index) in
+            self.reloadTable(index: index)
+        }).disposed(by: disposeBag)
+        
         tableView.rx.itemSelected.subscribe(onNext: { (indexPath) in
             self.didSelectTrack(trackIndex: indexPath.row)
         }).disposed(by: disposeBag)
@@ -109,6 +113,12 @@ class TrackListTableViewController: UITableViewController {
         
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func reloadTable(index: Int) {
+        guard self.viewModel.trackList.value.count > 0 else { return }
+        
+        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
     }
     
     private func didSelectTrack(trackIndex: Int) {
@@ -132,7 +142,10 @@ class TrackListTableViewController: UITableViewController {
         
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "trackCell", for: indexPath) as! TrackListTableViewCell
-        cell.setupCell(track: viewModel.trackList.value[indexPath.row])
+        let track = viewModel.trackList.value[indexPath.row]
+        
+        cell.setupCell(track: track)
+        cell.setCellImage(image: viewModel.loadTrackImage(track: track, index: indexPath.row))
         
         return cell
     }
@@ -150,7 +163,7 @@ class TrackListTableViewController: UITableViewController {
         dateFormatter.dateFormat = "MMM dd, yyyy HH:mm"
         let formattedDate = dateFormatter.string(from: self.dateLastVisited as Date)
         
-        return "Last viewed: \(formattedDate)"
+        return "Last Viewed: \(formattedDate)"
     }
     
     //MARK: - Navigation
