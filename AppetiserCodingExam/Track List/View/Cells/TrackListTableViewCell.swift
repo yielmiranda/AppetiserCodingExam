@@ -31,10 +31,12 @@ class TrackListTableViewCell: UITableViewCell {
     //MARK: - Custom
     
     func setupCell(track: Track) {
-        artworkImageView.loadImage(imageUrl: track.artworkUrl100)
-        
         titleLabel.text = track.trackName
         genreLabel.text = track.primaryGenreName
         priceLabel.text = track.currency + " \(track.trackPrice ?? 0)"
+    }
+    
+    func setCellImage(image: UIImage?) {
+        artworkImageView.image = image ?? UIImage(named: "artworkPlaceholder")!
     }
 }

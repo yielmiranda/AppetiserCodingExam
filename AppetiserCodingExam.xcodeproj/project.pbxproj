@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		49B92464246564350074CB7E /* TrackArtworkAlamofireService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B92463246564350074CB7E /* TrackArtworkAlamofireService.swift */; };
-		49B924682465661C0074CB7E /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B924672465661C0074CB7E /* UIImageView+Extension.swift */; };
 		49B92470246581AC0074CB7E /* LastVisit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B9246F246581AC0074CB7E /* LastVisit.swift */; };
 		49B924722465820F0074CB7E /* LastVisitLocalLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B924712465820F0074CB7E /* LastVisitLocalLoader.swift */; };
 		49B92474246591360074CB7E /* LastVisitLocalSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B92473246591360074CB7E /* LastVisitLocalSaver.swift */; };
 		49B924762465CF660074CB7E /* TrackDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B924752465CF660074CB7E /* TrackDetailsViewModel.swift */; };
 		49B924792465D12B0074CB7E /* TrackDetailsLocalLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B924782465D12B0074CB7E /* TrackDetailsLocalLoader.swift */; };
+		49BBA06F247062A6005C44A9 /* TrackDetailsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BBA06E247062A6005C44A9 /* TrackDetailsLoader.swift */; };
+		49BBA07224706327005C44A9 /* TrackDetailsRemoteLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BBA07124706327005C44A9 /* TrackDetailsRemoteLoader.swift */; };
 		49F6C0D82462E2DB00A5C81C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6C0D72462E2DB00A5C81C /* AppDelegate.swift */; };
 		49F6C0DA2462E2DB00A5C81C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6C0D92462E2DB00A5C81C /* SceneDelegate.swift */; };
 		49F6C0F82462E51A00A5C81C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49F6C0EF2462E51900A5C81C /* Assets.xcassets */; };
@@ -45,12 +46,13 @@
 
 /* Begin PBXFileReference section */
 		49B92463246564350074CB7E /* TrackArtworkAlamofireService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackArtworkAlamofireService.swift; sourceTree = "<group>"; };
-		49B924672465661C0074CB7E /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		49B9246F246581AC0074CB7E /* LastVisit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastVisit.swift; sourceTree = "<group>"; };
 		49B924712465820F0074CB7E /* LastVisitLocalLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastVisitLocalLoader.swift; sourceTree = "<group>"; };
 		49B92473246591360074CB7E /* LastVisitLocalSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastVisitLocalSaver.swift; sourceTree = "<group>"; };
 		49B924752465CF660074CB7E /* TrackDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsViewModel.swift; sourceTree = "<group>"; };
 		49B924782465D12B0074CB7E /* TrackDetailsLocalLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsLocalLoader.swift; sourceTree = "<group>"; };
+		49BBA06E247062A6005C44A9 /* TrackDetailsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsLoader.swift; sourceTree = "<group>"; };
+		49BBA07124706327005C44A9 /* TrackDetailsRemoteLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailsRemoteLoader.swift; sourceTree = "<group>"; };
 		49F6C0D42462E2DB00A5C81C /* AppetiserCodingExam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppetiserCodingExam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F6C0D72462E2DB00A5C81C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49F6C0D92462E2DB00A5C81C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				49F6C12B2464160600A5C81C /* Global.swift */,
+				49BBA070247062B2005C44A9 /* Model */,
 				49B9246C246581890074CB7E /* Feature */,
 			);
 			path = Global;
@@ -143,9 +146,35 @@
 		49B924772465D10C0074CB7E /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				49B924782465D12B0074CB7E /* TrackDetailsLocalLoader.swift */,
+				49BBA06E247062A6005C44A9 /* TrackDetailsLoader.swift */,
+				49BBA06C24706282005C44A9 /* Local */,
+				49BBA06D2470628F005C44A9 /* Remote */,
 			);
 			path = Feature;
+			sourceTree = "<group>";
+		};
+		49BBA06C24706282005C44A9 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				49B924782465D12B0074CB7E /* TrackDetailsLocalLoader.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		49BBA06D2470628F005C44A9 /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				49BBA07124706327005C44A9 /* TrackDetailsRemoteLoader.swift */,
+			);
+			path = Remote;
+			sourceTree = "<group>";
+		};
+		49BBA070247062B2005C44A9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				49F6C10E2463F7F500A5C81C /* Track.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		49F6C0CB2462E2DB00A5C81C = {
@@ -226,7 +255,6 @@
 			children = (
 				49F6C10224631E0000A5C81C /* Error+Extension.swift */,
 				49F6C10624631E9F00A5C81C /* JSONDecodable.swift */,
-				49B924672465661C0074CB7E /* UIImageView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -234,7 +262,6 @@
 		49F6C10A2463F6A000A5C81C /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				49F6C10E2463F7F500A5C81C /* Track.swift */,
 				49F6C10C2463F7C400A5C81C /* TrackListLoader.swift */,
 				49F6C1102463F90C00A5C81C /* Local */,
 				49F6C1112463F91200A5C81C /* Remote */,
@@ -428,6 +455,7 @@
 				49F6C10D2463F7C400A5C81C /* TrackListLoader.swift in Sources */,
 				49F6C10F2463F7F500A5C81C /* Track.swift in Sources */,
 				49B924792465D12B0074CB7E /* TrackDetailsLocalLoader.swift in Sources */,
+				49BBA07224706327005C44A9 /* TrackDetailsRemoteLoader.swift in Sources */,
 				49B92474246591360074CB7E /* LastVisitLocalSaver.swift in Sources */,
 				49F6C0FE2462E71700A5C81C /* APIManager.swift in Sources */,
 				49F6C1152463FEFC00A5C81C /* TrackListLocalSaver.swift in Sources */,
@@ -436,7 +464,7 @@
 				49F6C12C2464160600A5C81C /* Global.swift in Sources */,
 				49F6C1212464078500A5C81C /* TrackListViewModel.swift in Sources */,
 				49B92464246564350074CB7E /* TrackArtworkAlamofireService.swift in Sources */,
-				49B924682465661C0074CB7E /* UIImageView+Extension.swift in Sources */,
+				49BBA06F247062A6005C44A9 /* TrackDetailsLoader.swift in Sources */,
 				49F6C10724631E9F00A5C81C /* JSONDecodable.swift in Sources */,
 				49F6C100246303CB00A5C81C /* Request.swift in Sources */,
 				49F6C0DA2462E2DB00A5C81C /* SceneDelegate.swift in Sources */,

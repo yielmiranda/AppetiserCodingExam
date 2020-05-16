@@ -10,6 +10,7 @@ import RxSwift
 
 protocol TrackListLoader {
     func load() -> Observable<[Track]>
+    func downloadTrackImage(imageUrl: String) -> Observable<UIImage>
 }
 
 public class DefaultTrackListLoader: TrackListLoader {
@@ -52,6 +53,16 @@ public class DefaultTrackListLoader: TrackListLoader {
                     return self.remoteLoader.load().flatMap(self.saveToDatabase)
                 }
         })
+    }
+    
+    /**
+    For downloading Track Image from the given Image Url
+     
+    - Parameter imageUrl: url string where the image will be downloaded from
+    - Returns: an Observable of element UIImage
+    */
+    func downloadTrackImage(imageUrl: String) -> Observable<UIImage> {
+        return remoteLoader.downloadTrackImage(imageUrl: imageUrl)
     }
     
     //MARK: Private

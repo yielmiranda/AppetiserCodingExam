@@ -17,6 +17,7 @@ class TrackListViewModel: NSObject {
     var trackListLoader: TrackListLoader!
     let trackList: BehaviorRelay<[Track]> = BehaviorRelay(value: [])
     let trackListServiceError: BehaviorRelay<String> = BehaviorRelay(value: "")
+    let shouldReloadTableIndex: BehaviorRelay<Int> = BehaviorRelay(value: 0)
     
     private let disposeBag = DisposeBag()
     
@@ -52,6 +53,28 @@ class TrackListViewModel: NSObject {
         }).disposed(by: disposeBag)
     }
     
+    /**
+    For downloading Track Image from the given Image Url or cache (if it's already downloaded)
+     
+    - Parameter imageUrl: url string where the image will be downloaded from
+    - Parameter index: to identify the indexPath of the cell to be reloaded after downloading
+    - Returns: a UIImage
+    */
+    func loadTrackImage(track: Track, index: Int) -> UIImage? {
+        let imageUrl = track.artworkUrl100 ?? ""
+        if let image = loadTrackImageFromCache(imageUrl: imageUrl) {
+            return image
+        }
+        
+        trackListLoader.downloadTrackImage(imageUrl: imageUrl).subscribe(onNext: { (image) in
+            self.shouldReloadTableIndex.accept(index)
+        }, onError: { (error) in
+            
+        }).disposed(by: disposeBag)
+        
+        return nil
+    }
+    
     //MARK: Private
     
     private func onLoadTrackListSuccess(tracks: [Track]) {
@@ -64,5 +87,9 @@ class TrackListViewModel: NSObject {
         self.trackListServiceError.accept(apiError.debugDescription)
         
         self.isLoading.accept(false)
+    }
+    
+    private func loadTrackImageFromCache(imageUrl: String) -> UIImage? {
+        return APIManager.shared.loadImageFromCache(imageUrl: imageUrl)
     }
 }
